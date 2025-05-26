@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content  %}
+    <h2>log out</h2>
+    <h3>gracias por su visita</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ from.as_p }}
+        <button type="submit">log out</button>
+    </form>
+{% endblock content %}

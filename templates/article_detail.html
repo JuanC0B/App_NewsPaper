@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container mt-4">
+    <div class="article-entry card mb-4 p-4 mx-auto" style="max-width: 800px;">
+      <h2 class="card-title">{{ object.title }}</h2>
+      <p class="text-muted">by <strong>{{ object.author }}</strong> | {{ object.date }}</p>
+      <p>{{ object.body }}</p>
+      
+      {% if object.photo %}
+        <div class="text-center mb-3">
+          <img src="{{ object.photo.url }}" alt="Article Image" class="img-fluid" style="max-width: 30%; height: auto;">
+        </div>
+      {% endif %}
+    </div>
+
+    <hr>
+
+    <div class="comments-section">
+      <h4>Comments</h4>
+      {% for comment in article.comment_set.all %}
+        <div class="comment mb-3 p-3 border rounded">
+          <p class="font-weight-bold">{{ comment.author }} &middot; {{ comment }}</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <hr>
+
+    <div class="comment-form">
+      <h4>Add a Comment</h4>
+      <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          {{ form.as_p }}
+        </div>
+        <button type="submit" class="btn btn-primary">Submit Comment</button>
+      </form>
+    </div>
+
+    <hr>
+
+    <div class="article-actions text-center">
+      <p>
+        <a href="{% url 'article_edit' article.pk %}" class="btn btn-warning btn-sm">Edit</a> |
+        <a href="{% url 'article_delete' article.pk %}" class="btn btn-danger btn-sm">Delete</a>
+      </p>
+      <p>Back to <a href="{% url 'article_list' %}" class="btn btn-link">All Articles</a>.</p>
+    </div>
+  </div>
+{% endblock content %}

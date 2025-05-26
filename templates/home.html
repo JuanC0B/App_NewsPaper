@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %} Home {% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- Mensaje de bienvenida -->
+    {% if user.is_authenticated %}
+        <div class="alert alert-success text-center">
+            <h5>Hola {{ user.username }}!</h5>
+            <p>Bienvenido a mi newspaper.</p>
+            <a href="{% url 'logout' %}" class="btn btn-danger">Log Out</a>
+        </div>
+    {% else %}
+        <div class="alert alert-warning text-center">
+            <p>You are not logged in.</p>
+            <a href="{% url 'login' %}" class="btn btn-primary">Log In</a>
+            <a href="{% url 'signup' %}" class="btn btn-secondary">Sign Up</a>
+        </div>
+    {% endif %}
+
+    <!-- Lista de artículos -->
+    <h2 class="mt-4 text-center">Articulos</h2>
+    {% if articles %}
+        <div class="row mt-4">
+            {% for article in articles %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ article.title }}</h5> <!-- Cambia "title" si el campo tiene otro nombre -->
+                            <p class="card-text">{{ article.body|truncatechars:150 }}</p> <!-- Cambia "body" según tu modelo -->
+                            <a href="{% url 'article_detail' article.id %}" class="btn btn-primary btn-sm">Leer mas</a>
+                        </div>
+                        <div class="card-footer text-muted">
+                            {% if article.photo or article.video %}
+                                <span class="text-success">Este artículo contiene multimedia.</span>
+                            {% else %}
+                                <span class="text-muted">Sin contenido multimedia.</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center mt-4">No articles available at the moment.</p>
+    {% endif %}
+</div>
+{% endblock content %}
