@@ -8,6 +8,7 @@ from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import UpdateView, DeleteView, CreateView
 from django.urls import reverse_lazy, reverse
 from .models import Article
+from .models import Comment
 from .forms import CommentForm
 from .forms import ArticleForm
 
@@ -90,3 +91,26 @@ class ArticleCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
+    
+class CommentEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Comment
+    fields = ['comment']
+    template_name = 'comment_edit.html'
+
+    def get_success_url(self):
+        return reverse('article_detail', kwargs={'pk': self.object.article.pk})
+
+    def test_func(self):
+        comment = self.get_object()
+        return self.request.user == comment.author or self.request.user == comment.article.author
+
+class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Comment
+    template_name = 'comment_delete.html'
+
+    def get_success_url(self):
+        return reverse('article_detail', kwargs={'pk': self.object.article.pk})
+
+    def test_func(self):
+        comment = self.get_object()
+        return self.request.user == comment.author or self.request.user == comment.article.author

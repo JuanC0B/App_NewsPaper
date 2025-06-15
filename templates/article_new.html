@@ -7,6 +7,6 @@
     <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form|crispy }}  <!-- El formulario se renderiza correctamente con crispy_forms -->
-        <button type="submit" class="btn btn-primary">Create Article</button>
+        <button type="submit" class="btn btn-primary">Crea un articulo</button>
     </form>
 {% endblock content %}

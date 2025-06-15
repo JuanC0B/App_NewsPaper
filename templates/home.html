@@ -1,41 +1,44 @@
 {% extends 'base.html' %}
 
-{% block title %} Home {% endblock title %}
+{% block title %}Home{% endblock title %}
 
 {% block content %}
-<div class="container mt-5">
-    <!-- Mensaje de bienvenida -->
+<div class="container mt-4">
+
+    <!-- ✅ Mensaje de bienvenida -->
     {% if user.is_authenticated %}
-        <div class="alert alert-success text-center">
-            <h5>Hola {{ user.username }}!</h5>
-            <p>Bienvenido a mi newspaper.</p>
-            <a href="{% url 'logout' %}" class="btn btn-danger">Log Out</a>
+        <div class="alert alert-success text-center shadow-sm">
+            <h5 class="mb-1">Hola <strong>{{ user.username }}</strong>, ¡un placer tenerte por aquí! 👋</h5>
+            <p class="mb-2">Bienvenido al newspaper de Juan Cortes. ¡Pásala bien! 😄</p>
+            <a href="{% url 'logout' %}" class="btn btn-danger btn-sm">Cerrar sesión</a>
         </div>
     {% else %}
-        <div class="alert alert-warning text-center">
-            <p>You are not logged in.</p>
-            <a href="{% url 'login' %}" class="btn btn-primary">Log In</a>
-            <a href="{% url 'signup' %}" class="btn btn-secondary">Sign Up</a>
+        <div class="alert alert-warning text-center shadow-sm">
+            <p class="mb-2">No has iniciado sesión.</p>
+            <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm me-2">Iniciar sesión</a>
+            <a href="{% url 'signup' %}" class="btn btn-primary btn-sm">Registrarse</a>
         </div>
     {% endif %}
 
-    <!-- Lista de artículos -->
-    <h2 class="mt-4 text-center">Articulos</h2>
+    <!-- ✅ Encabezado de sección -->
+    <h2 class="text-center fw-semibold my-5">📰 Artículos publicados</h2>
+
+    <!-- ✅ Tarjetas de artículos -->
     {% if articles %}
-        <div class="row mt-4">
+        <div class="row justify-content-center">
             {% for article in articles %}
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ article.title }}</h5> <!-- Cambia "title" si el campo tiene otro nombre -->
-                            <p class="card-text">{{ article.body|truncatechars:150 }}</p> <!-- Cambia "body" según tu modelo -->
-                            <a href="{% url 'article_detail' article.id %}" class="btn btn-primary btn-sm">Leer mas</a>
+                <div class="col-md-6 col-lg-4 d-flex align-items-stretch mb-4">
+                    <div class="card w-100 shadow-sm border-0 rounded-4">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold">{{ article.title }}</h5>
+                            <p class="card-text mb-4">{{ article.body|truncatechars:130 }}</p>
+                            <a href="{% url 'article_detail' article.id %}" class="btn btn-primary mt-auto">Leer más</a>
                         </div>
-                        <div class="card-footer text-muted">
+                        <div class="card-footer bg-white border-0 text-center text-muted small">
                             {% if article.photo or article.video %}
-                                <span class="text-success">Este artículo contiene multimedia.</span>
+                                <span class="text-success">✔ Este artículo contiene multimedia.</span>
                             {% else %}
-                                <span class="text-muted">Sin contenido multimedia.</span>
+                                <span class="text-muted">Este artículo no contiene multimedia.</span>
                             {% endif %}
                         </div>
                     </div>
@@ -43,7 +46,7 @@
             {% endfor %}
         </div>
     {% else %}
-        <p class="text-center mt-4">No articles available at the moment.</p>
+        <p class="text-center text-muted mt-4">No hay artículos publicados aún.</p>
     {% endif %}
 </div>
 {% endblock content %}

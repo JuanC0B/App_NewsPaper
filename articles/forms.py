@@ -10,4 +10,8 @@ class ArticleForm(forms.ModelForm):
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ['article', 'comment', 'author']  # Campos existentes en el modelo Comment
+        fields = ['comment']  # Campos existentes en el modelo Comment
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['comment'].label = 'Comentario'

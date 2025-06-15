@@ -4,7 +4,7 @@
   <div class="container mt-4">
     <div class="article-entry card mb-4 p-4 mx-auto" style="max-width: 800px;">
       <h2 class="card-title">{{ object.title }}</h2>
-      <p class="text-muted">by <strong>{{ object.author }}</strong> | {{ object.date }}</p>
+      <p class="text-muted">| Articulo hecho por <strong>{{ object.author }}</strong> | {{ object.date }}</p>
       <p>{{ object.body }}</p>
       
       {% if object.photo %}
@@ -17,35 +17,42 @@
     <hr>
 
     <div class="comments-section">
-      <h4>Comments</h4>
-      {% for comment in article.comment_set.all %}
-        <div class="comment mb-3 p-3 border rounded">
-          <p class="font-weight-bold">{{ comment.author }} &middot; {{ comment }}</p>
-        </div>
-      {% endfor %}
+      <h4>Comentarios</h4>
+        {% for comment in article.comment_set.all %}
+          <div class="comment mb-3 p-3 border rounded">
+            <p class="font-weight-bold">{{ comment.author }} &middot; {{ comment.comment }}</p>
+
+            {% if comment.author == user or object.author == user %}
+              <a href="{% url 'comment_edit' comment.pk %}" class="btn btn-sm btn-outline-primary">Editar</a>
+              <a href="{% url 'comment_delete' comment.pk %}" class="btn btn-sm btn-outline-danger">Eliminar</a>
+            {% endif %}
+          </div>
+        {% endfor %}
     </div>
 
     <hr>
 
     <div class="comment-form">
-      <h4>Add a Comment</h4>
+      <h4>Añade un comentario!</h4>
       <form method="post">
         {% csrf_token %}
         <div class="form-group">
           {{ form.as_p }}
         </div>
-        <button type="submit" class="btn btn-primary">Submit Comment</button>
+        <button type="submit" class="btn btn-primary">Publicar comentario</button>
       </form>
     </div>
 
     <hr>
 
-    <div class="article-actions text-center">
-      <p>
-        <a href="{% url 'article_edit' article.pk %}" class="btn btn-warning btn-sm">Edit</a> |
-        <a href="{% url 'article_delete' article.pk %}" class="btn btn-danger btn-sm">Delete</a>
-      </p>
-      <p>Back to <a href="{% url 'article_list' %}" class="btn btn-link">All Articles</a>.</p>
+    {% if object.author == user %}
+    <div class="text-center">
+      <a href="{% url 'article_edit' object.pk %}" class="btn btn-secondary">Editar Articulo</a>
+      <form method="post" action="{% url 'article_delete' object.pk %}" class="d-inline">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Eliminar Articulo</button>
+      </form>
     </div>
+    {% endif %}
   </div>
 {% endblock content %}
