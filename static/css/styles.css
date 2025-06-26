@@ -1,7 +1,7 @@
 body {
-    background-color: #f8f9fa;
-    font-family: 'Segoe UI', sans-serif;
-    color: #343a40;
+  font-family: 'Orbitron', sans-serif;
+  background-color: #000;
+  color: #fff;
 }
 
 .navbar {
@@ -12,14 +12,15 @@ body {
 }
 
 .card {
-    border: none;
-    border-radius: 1rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    border: 1px solid #0074FF;
+    border-radius: 12px;
+    filter: brightness(0.9);
     transition: transform 0.2s ease-in-out;
 }
 
 .card:hover {
     transform: scale(1.02);
+    border-radius: 12px;
 }
 
 .card-title {
@@ -28,13 +29,13 @@ body {
 }
 
 .btn-primary {
-    background-color: #4dabf7;
-    border-color: #4dabf7;
+    background-color: #0074FF;
+    color: white;
+    border-radius: 8px;
 }
 
 .btn-primary:hover {
-    background-color: #339af0;
-    border-color: #339af0;
+  background-color: #005ecb;
 }
 
 .alert-success {
@@ -45,7 +46,22 @@ body {
 }
 
 footer {
-    color: #adb5bd;
+    color: #ffffff;
     font-size: 0.9rem;
     margin-top: 2rem;
+}
+
+.video-container {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  overflow: hidden;
+}
+.bg-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.4) contrast(1.2);
 }

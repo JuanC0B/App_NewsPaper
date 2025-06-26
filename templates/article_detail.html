@@ -1,56 +1,69 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div class="container mt-4">
-    <div class="article-entry card mb-4 p-4 mx-auto" style="max-width: 800px;">
-      <h2 class="card-title">{{ object.title }}</h2>
-      <p class="text-muted">| Articulo hecho por <strong>{{ object.author }}</strong> | {{ object.date }}</p>
-      <p>{{ object.body }}</p>
-      
-      {% if object.photo %}
-        <div class="text-center mb-3">
-          <img src="{{ object.photo.url }}" alt="Article Image" class="img-fluid" style="max-width: 30%; height: auto;">
-        </div>
+  <div class="container py-5">
+    <div class="card bg-dark text-white shadow-lg border-0 mx-auto" style="max-width: 900px; border-radius: 16px;">
+      {% if object.thumbnail %}
+        <img src="{{ object.thumbnail.url }}" class="card-img-top" alt="Imagen destacada" style="border-radius: 16px 16px 0 0; max-height: 400px; object-fit: cover;">
       {% endif %}
-    </div>
 
-    <hr>
+      <div class="card-body">
+        <h1 class="card-title fw-bold text-center text-uppercase" style="color: #0d6efd;">{{ object.title }}</h1>
+        <p class="text-muted text-center mb-4">Por <strong>{{ object.author }}</strong> | {{ object.date }}</p>
+        
 
-    <div class="comments-section">
-      <h4>Comentarios</h4>
-        {% for comment in article.comment_set.all %}
-          <div class="comment mb-3 p-3 border rounded">
-            <p class="font-weight-bold">{{ comment.author }} &middot; {{ comment.comment }}</p>
 
-            {% if comment.author == user or object.author == user %}
-              <a href="{% url 'comment_edit' comment.pk %}" class="btn btn-sm btn-outline-primary">Editar</a>
-              <a href="{% url 'comment_delete' comment.pk %}" class="btn btn-sm btn-outline-danger">Eliminar</a>
-            {% endif %}
+        {% if object.photo %}
+          <div class="text-center my-4">
+            <img src="{{ object.photo.url }}" alt="Imagen del artículo" class="img-fluid rounded shadow-sm" style="max-width: 50%;">
           </div>
-        {% endfor %}
+        {% endif %}
+      
+        <div class="card-text fs-5" style="line-height: 1.8;">
+          {{ object.body }}
+        </div>
+
+      </div>
     </div>
 
-    <hr>
+    <!-- Comentarios -->
+    <div class="mt-5 bg-black p-4 rounded-4 text-white shadow-lg">
+      <h3 class="text-primary mb-4">Comentarios</h3>
 
-    <div class="comment-form">
-      <h4>Añade un comentario!</h4>
+      {% for comment in article.comment_set.all %}
+        <div class="bg-dark text-white p-3 rounded-3 mb-3 border-start border-5 border-primary">
+          <p class="mb-1"><strong>{{ comment.author }}</strong> dijo:</p>
+          <p class="fst-italic">{{ comment.comment }}</p>
+
+          {% if comment.author == user or object.author == user %}
+            <div class="mt-2">
+              <a href="{% url 'comment_edit' comment.pk %}" class="btn btn-sm btn-outline-light me-2">Editar</a>
+              <a href="{% url 'comment_delete' comment.pk %}" class="btn btn-sm btn-outline-danger">Eliminar</a>
+            </div>
+          {% endif %}
+        </div>
+      {% empty %}
+        <p class="text-secondary">Sé el primero en comentar este artículo 👊</p>
+      {% endfor %}
+    </div>
+
+    <!-- Formulario de comentarios -->
+    <div class="mt-4 p-4 bg-dark text-white rounded-4 shadow-sm">
+      <h4 class="text-primary">Añade un comentario</h4>
       <form method="post">
         {% csrf_token %}
-        <div class="form-group">
-          {{ form.as_p }}
-        </div>
-        <button type="submit" class="btn btn-primary">Publicar comentario</button>
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary mt-2">Publicar comentario</button>
       </form>
     </div>
 
-    <hr>
-
+    <!-- Acciones del autor -->
     {% if object.author == user %}
-    <div class="text-center">
-      <a href="{% url 'article_edit' object.pk %}" class="btn btn-secondary">Editar Articulo</a>
+    <div class="text-center mt-5">
+      <a href="{% url 'article_edit' object.pk %}" class="btn btn-outline-primary me-3">Editar Artículo</a>
       <form method="post" action="{% url 'article_delete' object.pk %}" class="d-inline">
         {% csrf_token %}
-        <button type="submit" class="btn btn-danger">Eliminar Articulo</button>
+        <button type="submit" class="btn btn-danger">Eliminar Artículo</button>
       </form>
     </div>
     {% endif %}

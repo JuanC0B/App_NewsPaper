@@ -15,13 +15,16 @@
         <header class="p-3 mb-3 border-bottom">
             <div class="container">
                 <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                    <a class="navbar-brand" href="{% url 'home' %}">Newspaper</a>
+                    <a class="navbar-brand" href="{% url 'home' %}">JuanCaps </a>
                     <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                         {% if user.is_authenticated %}
-                            <li><a href="{% url 'article_new' %}" class="nav-link px-2 link-dark">+ Nuevo articulo</a></li>
-                        </ul>
+                            <li><a href="{% url 'article_new' %}" class="nav-link px-2 ">+ Nuevo producto</a></li>
+                        
+                    </ul>
+                    
+                        <img src="{% static 'img/juancaps.png' %}" alt="JuanCaps" style="width: 50px; border-radius: 50px;">
                         <div class="dropdown text-end">
-                            <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">{{ user.username }}</a>
+                            <a href="#" class="d-block text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">{{ user.username }}</a>
                             <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
                                 <li><a class="dropdown-item" href="{% url 'password_change' %}">Cambiar la constraseña</a></li>
                                 <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesion</a></li>
@@ -38,6 +41,12 @@
             </div>
         </header>
 
+        <div class="video-container">
+            <video autoplay loop muted class="bg-video">
+                <source src="{% static 'videos/urban_night.mp4' %}" type="video/mp4">
+            </video>
+        </div>
+
         <main>
             {% block content %}
             {% endblock content %}
@@ -46,7 +55,7 @@
         <!-- Footer -->
         <footer class=" text-center text-lg-start mt-5 py-4">
             <div class="container">
-                <p class="text-muted mb-0">&copy; 2025 Newspaper por Juan Cortés. Todos los derechos reservados.</p>
+                <p class=" mb-0">&copy; 2025 Newspaper por Juan Cortes. Todos los derechos reservados.</p>
             </div>
         </footer>
     </div>
